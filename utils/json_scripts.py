@@ -11,6 +11,7 @@ def fill_json(data: dict_with_weather_info):
         try:
             file.seek(file.truncate(file.tell() - 1))  # обрезаем хвост и переходим в конец
             file.write(',\n')  # добавим запятую
+
         except OSError:
             file.write('[')
         finally:
