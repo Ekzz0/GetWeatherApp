@@ -1,0 +1,4 @@
+[{"city_name": "Saint Petersburg", "weather_description": "\u044f\u0441\u043d\u043e", "current_temp": -3.35, "current_temp_feels_like": -7.52, "wind_speed": 3, "dt": 1698282136},
+{"city_name": "Perm", "weather_description": "\u043e\u0431\u043b\u0430\u0447\u043d\u043e \u0441 \u043f\u0440\u043e\u044f\u0441\u043d\u0435\u043d\u0438\u044f\u043c\u0438", "current_temp": -4.23, "current_temp_feels_like": -10.21, "wind_speed": 5, "dt": 1698282083},
+{"city_name": "Norilsk", "weather_description": "\u043f\u0430\u0441\u043c\u0443\u0440\u043d\u043e", "current_temp": -8.69, "current_temp_feels_like": -11.39, "wind_speed": 1.37, "dt": 1698282089},
+{"city_name": "Saint Petersburg", "weather_description": "\u044f\u0441\u043d\u043e", "current_temp": -3.35, "current_temp_feels_like": -7.52, "wind_speed": 3, "dt": 1698282136}]
