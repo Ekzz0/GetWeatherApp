@@ -1,5 +1,4 @@
 import os
-from .constants import dict_with_weather_info
 from .data_structures import Coordinates, WeatherInfo
 from dacite import from_dict
 
@@ -11,7 +10,7 @@ def clear_menu():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def print_row_from_json(i: int, row: dict_with_weather_info):
+def print_row_from_json(i: int, row: WeatherInfo):
     """
     Метод для вывода данных из json файла в консоль.
     :param i: номер индекса в словаре.

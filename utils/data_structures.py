@@ -1,4 +1,32 @@
 from dataclasses import dataclass, asdict
+from typing import Optional, Callable
+from strenum import StrEnum
+
+
+class Action(StrEnum):
+    END_APP = 'Конец'
+    MAIN_MENU = 'Главное меню'
+    TEMP_BY_COORDS = 'Выбор температуры по координатам'
+    TEMP_BY_CITY_NAME = 'Выбор температуры по городу'
+    INPUT_COORDS = 'Ввести координаты'
+    INPUT_CITY_NAME = 'Ввести название города'
+    TEMP_BY_IP = 'Выбор температуры по текущему местоположению'
+    VIEW_HISTORY = 'Посмотреть историю'
+    CLEAR_HISTORY = 'Очистить историю'
+
+
+@dataclass
+class Menu:
+    number: int
+    action_label: str
+    action: Action
+
+
+@dataclass
+class Option:
+    menu_list: list[Menu]
+    head: str = ''
+    func: Optional[Callable] = None
 
 
 @dataclass

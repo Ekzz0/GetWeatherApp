@@ -7,7 +7,7 @@ import json
 from .data_structures import WeatherInfo
 
 
-def by_current_geo_action():
+def by_ip_action():
     """
     Алгоритм действия 'Выбор температуры по текущему местоположению'
     """

@@ -1,4 +1,4 @@
-from .actions_menu import get_options_by_action_name, void
+from .actions_menu import get_options_by_action_name
 from .io_scripts import clear_menu
 from .constants import dict_with_action_options
 
@@ -8,14 +8,11 @@ def print_options(options: dict_with_action_options):
     Метод, который выводит в консоль данные возможных действий.
     :param options: словарь с информацией о доступных в данном меню действиях.
     """
-    print()
     # Try-except использован для того, чтобы выводить в консоль только те элементы словаря options,
     # которые имею ключ - целое число, т.к. в словаре хранятся и значения с ключами другого формата
-    try:
-        for key, value in options.items():
-            print(f'{int(key)}: {value["action_head"]}', end='')
-    except ValueError:
-        pass
+
+    for menu in options.menu_list:
+        print(f'{menu.number}: {menu.action_label}', end='')
     print()
 
 
@@ -26,12 +23,13 @@ def print_head_and_options(options: dict_with_action_options):
     """
     # Очистка консоли и отображение заголовка
     clear_menu()
-    if options.get('head'):
-        print(options['head'])
+    if options.head:
+        print(options.head)
 
     # Вызов соответствующей функции
-    func = options['func']
-    func()
+    if options.func:
+        func = options.func
+        func()
 
     # Вывод в консоль доступных действий
     print_options(options)
@@ -58,17 +56,17 @@ def select_mode(options: dict_with_action_options) -> dict_with_action_options:
     """
     try:
         # Выбор действия
-        mode = input("Выберите действие (введите цифру): ").strip()
-        action = options[mode]["action"]
+        mode = int(input("Выберите действие (введите цифру): ").strip())
+        action = options.menu_list[mode - 1].action
     except ValueError:
         # Обработка ошибки, связанной с неверно выбранным меню
         clear_menu()
-        options['func'] = void
+        options.func = None
         return options
     except KeyError:
         # Обработка ошибки, связанной с неверно выбранным меню
         clear_menu()
-        options['func'] = void
+        options.func = None
         return options
     else:
         clear_menu()

@@ -1,117 +1,69 @@
-from .constants import dict_with_action_options
-from .action_scripts import by_coords_action, by_city_name_action, by_current_geo_action,\
+from .action_scripts import by_coords_action, by_city_name_action, by_ip_action, \
     get_data_from_history, clear_history
+from .data_structures import Action, Option
+from .config import MAIN_MENU_OPTIONS, TEMP_BY_COORDS_OPTIONS, TEMP_BY_CITY_NAME_OPTIONS, BACK_AND_END_OPTIONS
 
 
-def void():
-    """
-    Метод используется для вызова пустой функции
-    """
-    pass
+# class ActionRouter:
+#     def __init__(self):
+#         self.__action = Action.MAIN_MENU
+#
+#     @property
+#     def action_name(self):
+#         return self.__action
+#
+#     @action_name.setter
+#     def action_name(self, action_name):
+#         self.__action = action_name
+#
+#     def get_options_by_action(self):
+#         pass
 
 
-def get_options_by_action_name(action: str) -> dict_with_action_options:
-    """
-    Формат словаря options: {key: {action_head: ..., action: ...}
-    - key – это номер действия в меню, по которому происходит переключение на другое меню (или func/head).
-    - head – это заголовок выбранного меню.
-    - func – это функция, которая должна выполниться при запуске меню.
-    - action_head – это заголовок действия, которое отображается в меню с соответствующим ему номером.
-    - action – это название следующего меню, к которому осуществится переход после выбора действия.
-
-    :param action: название выбранного действия.
-    :return: dict_with_action_options
-    """
-    # Параметры для действия 'Конец'
-    if action == 'Конец':
+def get_options_by_action_name(action: Action) -> Option:
+    if action == Action.END_APP:
         quit()
-    # Параметры для действия 'Главное меню'
-    if action == 'Главное меню':
-        options = {'1': {"action_head": "Определить погоду (по координатам)\n",
-                         "action": 'Выбор температуры по координатам'},
-                   '2': {"action_head": "Определить погоду (по городу)\n",
-                         "action": 'Выбор температуры по городу'},
-                   '3': {"action_head": "Определить погоду (по текущему местоположению)\n",
-                         "action": 'Выбор температуры по текущему местоположению'},
-                   '4': {"action_head": "Посмотреть историю запросов (последние n штук)\n",
-                         "action": 'Посмотреть историю'},
-                   '5': {"action_head": "Очистить историю запросов\n",
-                         "action": 'Очистить историю'},
-                   '6': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "head": "Главное меню:".upper(),
-                   "func": void}
-        return options
-    # Параметры для действия 'Выбор температуры по координатам'
-    elif action == 'Выбор температуры по координатам':
-        options = {'1': {"action_head": "Ввести координаты\n",
-                         "action": 'Ввести координаты'},
-                   '2': {"action_head": "Назад\n",
-                         "action": "Главное меню"},
-                   '3': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "head": "Определить текущую погоду (по координатам):".upper(),
-                   "func": void}
-        return options
-    # Параметры для действия 'Выбор температуры по городу'
-    elif action == 'Выбор температуры по городу':
-        options = {'1': {"action_head": "Ввести название города\n",
-                         "action": 'Ввести название города'},
-                   '2': {"action_head": "Назад\n",
-                         "action": "Главное меню"},
-                   '3': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "head": "Определить текущую погоду (по городу):".upper(),
-                   "func": void}
-        return options
-    # Параметры для действия 'Ввести координаты'
-    elif action == 'Ввести координаты':
-        options = {'1': {"action_head": "Назад в главное меню\n",
-                         "action": "Главное меню"},
-                   '2': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "func": by_coords_action}
-        return options
-    # Параметры для действия 'Ввести название города'
-    elif action == 'Ввести название города':
-        options = {'1': {"action_head": "Назад в главное меню\n",
-                         "action": "Главное меню"},
-                   '2': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "func": by_city_name_action}
-        return options
-    # Параметры для действия 'Выбор температуры по текущему местоположению'
-    elif action == 'Выбор температуры по текущему местоположению':
-        options = {'1': {"action_head": "Назад в главное меню\n",
-                         "action": "Главное меню"},
-                   '2': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "func": by_current_geo_action}
-        return options
-    # Параметры для действия 'Посмотреть историю'
-    elif action == 'Посмотреть историю':
-        options = {'1': {"action_head": "Назад в главное меню\n",
-                         "action": "Главное меню"},
-                   '2': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "func": get_data_from_history}
-        return options
-    # Параметры для действия 'Очистить историю'
-    elif action == 'Очистить историю':
-        options = {'1': {"action_head": "Определить погоду (по координатам)\n",
-                         "action": 'Выбор температуры по координатам'},
-                   '2': {"action_head": "Определить погоду (по городу)\n",
-                         "action": 'Выбор температуры по городу'},
-                   '3': {"action_head": "Определить погоду (по текущему местоположению)\n",
-                         "action": 'Выбор температуры по текущему местоположению'},
-                   '4': {"action_head": "Посмотреть историю запросов (последние n штук)\n",
-                         "action": 'Посмотреть историю'},
-                   '5': {"action_head": "Очистить историю запросов\n",
-                         "action": 'Очистить историю'},
-                   '6': {"action_head": "Завершить работу приложения\n",
-                         "action": "Конец"},
-                   "head": "История очищена!\nГлавное меню:".upper(),
-                   "func": clear_history}
-        return options
-
-
+    elif action == Action.MAIN_MENU:
+        return Option(
+            head="Определить погоду (по координатам)\n".upper(),
+            func=None,
+            menu_list=MAIN_MENU_OPTIONS
+        )
+    elif action == Action.TEMP_BY_COORDS:
+        return Option(
+            head="Определить текущую погоду (по координатам):\n".upper(),
+            func=None,
+            menu_list=TEMP_BY_COORDS_OPTIONS
+        )
+    elif action == Action.TEMP_BY_CITY_NAME:
+        return Option(
+            head="Определить текущую погоду (по городу):".upper(),
+            func=None,
+            menu_list=TEMP_BY_CITY_NAME_OPTIONS
+        )
+    elif action == Action.INPUT_COORDS:
+        return Option(
+            func=by_coords_action,
+            menu_list=BACK_AND_END_OPTIONS
+        )
+    elif action == Action.INPUT_CITY_NAME:
+        return Option(
+            func=by_city_name_action,
+            menu_list=BACK_AND_END_OPTIONS
+        )
+    elif action == Action.TEMP_BY_IP:
+        return Option(
+            func=by_ip_action,
+            menu_list=BACK_AND_END_OPTIONS
+        )
+    elif action == Action.VIEW_HISTORY:
+        return Option(
+            func=get_data_from_history,
+            menu_list=BACK_AND_END_OPTIONS
+        )
+    elif action == Action.CLEAR_HISTORY:
+        return Option(
+            head="История очищена!\nГлавное меню:".upper(),
+            func=clear_history,
+            menu_list=MAIN_MENU_OPTIONS
+        )
