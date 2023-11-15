@@ -1,8 +1,8 @@
 import json
-from .constants import dict_with_weather_info
+from .data_structures import WeatherInfo
 
 
-def fill_json(data: dict_with_weather_info):
+def fill_json(data: WeatherInfo):
     """
     Метод для заполнения json файла по словарю с данными о погоде.
     :param data: словарь с данными о погоде
@@ -15,11 +15,11 @@ def fill_json(data: dict_with_weather_info):
         except OSError:
             file.write('[')
         finally:
-            json.dump(data, file)  # записываем структуру в файл
+            json.dump(data.dict(), file)  # записываем структуру в файл
             file.write(']')
 
 
-def read_json(filename: str) -> dict_with_weather_info:
+def read_json(filename: str) -> list[dict]:
     """
     Метод для чтения json файла
     :param filename: имя открываемого файла

@@ -1,30 +1,35 @@
 import requests
-from .constants import URL_IPINFO, ULR_GEOCODING_REVERSE_API, ULR_GEOCODING_API, ULR_WEATHER_API, API_KEY, \
-    dict_with_geocoding_info
+from .constants import URL_IPINFO, ULR_GEOCODING_REVERSE_API, ULR_GEOCODING_API, ULR_WEATHER_API, API_KEY
+from .errors_processing import open_weather_error_processing
+from .data_processing import processing_weather, processing_coordinates, \
+    processing_coorditanes_reverse, processing_location_by_ip
+from .data_structures import WeatherInfo, Coordinates
 
 
-def request_get_loc_by_ip() -> requests.Response:
+def get_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
     """
     Запрос на ipinfo для получения данных по ip адресу
     :return: requests.Response
     """
     response = requests.get(URL_IPINFO)
-    return response
+    Coords, Weather = processing_location_by_ip(response)
+
+    return Coords, Weather
 
 
-def request_get_geocoding_reverse(lat: float | int, lon: float | int) -> requests.Response:
+def get_coordinates_reverse(Coords) -> WeatherInfo:
     """
     Запрос на Geocoding reverse API
-    :param lat: широта
-    :param lon: долгота
+    :param Coords: широта и долгота
     :return: requests.Response
     """
     response = requests.get(ULR_GEOCODING_REVERSE_API,
-                            params={'lat': lat, 'lon': lon, 'appid': API_KEY, 'limit': 1})
-    return response
+                            params={'lat': Coords.lat, 'lon': Coords.lon, 'appid': API_KEY, 'limit': 1})
+    Weather = WeatherInfo(city_name=processing_coorditanes_reverse(response))
+    return Weather
 
 
-def request_get_geocoding(city_name: str) -> requests.Response:
+def get_coordinates(city_name: str) -> Coordinates:
     """
     Запрос на Geocoding API
     :param city_name: название города
@@ -32,18 +37,23 @@ def request_get_geocoding(city_name: str) -> requests.Response:
     """
     response = requests.get(ULR_GEOCODING_API,
                             params={'q': city_name, 'appid': API_KEY, 'limit': 1})
-    return response
+    # Проверка на ошибки из Open Weather Map
+    open_weather_error_processing(response.status_code)
+    Coords = processing_coordinates(response)
+    return Coords
 
 
-def request_get_weather_map(report_geo: dict_with_geocoding_info) -> requests.Response:
+def get_weather(Coords, Weather) -> WeatherInfo:
     """
     Запрос на OpenWeatherMap API
-    :param report_geo: dict_with_geocoding_info
+    :param
     :return: requests.Response
     """
     response = requests.get(ULR_WEATHER_API,
-                            params={'lat': report_geo['lat'], 'lon': report_geo['lon'],
+                            params={'lat': Coords.lat, 'lon': Coords.lon,
                                     'appid': API_KEY, 'lang': "ru", "units": 'metric'
                                     }
                             )
-    return response
+    open_weather_error_processing(response.status_code)
+    Weather = processing_weather(response, Weather)
+    return Weather

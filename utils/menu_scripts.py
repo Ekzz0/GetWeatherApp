@@ -1,4 +1,4 @@
-from .actions_scripts import get_options_by_action_name, void
+from .actions_menu import get_options_by_action_name, void
 from .io_scripts import clear_menu
 from .constants import dict_with_action_options
 

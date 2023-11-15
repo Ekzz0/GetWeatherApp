@@ -1,9 +1,9 @@
-from .constants import dict_with_geocoding_info, dict_with_weather_info
 import requests
 import datetime
+from .data_structures import Coordinates, WeatherInfo
 
 
-def date_processing(dt: int, timedelta: int) -> str:
+def processing_date(dt: int, timedelta: int) -> str:
     """
     Формирование времени запроса с разницей по UTC
     :param dt: время запроса из API
@@ -14,11 +14,11 @@ def date_processing(dt: int, timedelta: int) -> str:
     return str(datetime.datetime.fromtimestamp(float(dt), timezone))
 
 
-def response_processing_weather_map(response: requests.Response, city_name: str) -> dict_with_weather_info:
+def processing_weather(response: requests.Response, Weather: WeatherInfo) -> WeatherInfo:
     """
     Обработка данных из запроса на OpenWeatherMap API
+    :param Weather:
     :param response: запрос на OpenWeatherMap API
-    :param city_name: название города
     :return: dict_with_weather_info
     """
     data = response.json()
@@ -27,25 +27,22 @@ def response_processing_weather_map(response: requests.Response, city_name: str)
     current_temp = data['main']["temp"]
     current_temp_feels_like = data['main']["feels_like"]
     wind_speed = data['wind']['speed']
-    dt = date_processing(data["dt"], data["timezone"])
+    dt = processing_date(data["dt"], data["timezone"])
 
     # Формирование отчета
-    report = {"city_name": city_name,
-              "weather_description": weather_description,
-              "current_temp": current_temp,
-              "current_temp_feels_like": current_temp_feels_like,
-              "wind_speed": wind_speed,
-              'dt': dt
-              }
+    Weather.weather_description = weather_description
+    Weather.current_temp = current_temp
+    Weather.current_temp_feels_like = current_temp_feels_like
+    Weather.wind_speed = wind_speed
+    Weather.dt = dt
 
-    return report
+    return Weather
 
 
-def response_processing_geocoding(response: requests.Response, city_name: str) -> dict_with_geocoding_info:
+def processing_coordinates(response: requests.Response) -> Coordinates:
     """
     Обработка данных из запроса на geocoding API
     :param response: запрос на Geocoding API
-    :param city_name: название города
     :return: dict_with_geocoding_info
     """
     data = response.json()[0]
@@ -53,12 +50,10 @@ def response_processing_geocoding(response: requests.Response, city_name: str) -
     lon = data['lon']
 
     # Формирование отчета
-    report = {'lat': lat, 'lon': lon, 'city_name': city_name}
-
-    return report
+    return Coordinates(lat=lat, lon=lon)
 
 
-def response_processing_geocoding_reverse(response: requests.Response) -> str:
+def processing_coorditanes_reverse(response: requests.Response) -> str:
     """
     Обработка данных из запроса на geocoding reverse API
     :param response: запрос на Geocoding API
@@ -70,7 +65,7 @@ def response_processing_geocoding_reverse(response: requests.Response) -> str:
     return name
 
 
-def response_processing_loc_by_ip(response: requests.Response) -> dict_with_geocoding_info:
+def processing_location_by_ip(response: requests.Response) -> tuple[Coordinates, WeatherInfo]:
     """
     Обработка данных из запроса на ipinfo
     :param response: запрос на ipinfo
@@ -78,6 +73,5 @@ def response_processing_loc_by_ip(response: requests.Response) -> dict_with_geoc
     """
     data = response.json()
     lat, lon = map(float, data['loc'].split(','))
-    city_name = data['city']
 
-    return {'lat': lat, 'lon': lon, 'city_name': city_name}
+    return Coordinates(lat=lat, lon=lon), WeatherInfo(city_name=data['city'])
