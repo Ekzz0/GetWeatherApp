@@ -20,7 +20,7 @@ from .config import MAIN_MENU_OPTIONS, TEMP_BY_COORDS_OPTIONS, TEMP_BY_CITY_NAME
 #         pass
 
 
-def get_options_by_action_name(action: Action) -> Option:
+def get_options_by_action_name(action: Action = Action.MAIN_MENU) -> Option:
     if action == Action.END_APP:
         quit()
     elif action == Action.MAIN_MENU:

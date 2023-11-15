@@ -71,5 +71,5 @@ def select_mode(options: dict_with_action_options) -> dict_with_action_options:
     else:
         clear_menu()
         # Получение параметров выбранного меню
-        options = get_options_by_action_name(action)
+        options = get_options_by_action_name(action=action)
         return options
