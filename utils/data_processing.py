@@ -1,6 +1,6 @@
 import requests
 import datetime
-from .data_structures import Coordinates, WeatherInfo
+from .config import Coordinates, WeatherInfo
 
 
 def processing_date(dt: int, timedelta: int) -> str:
@@ -19,7 +19,7 @@ def processing_weather(response: requests.Response, Weather: WeatherInfo) -> Wea
     Обработка данных из запроса на OpenWeatherMap API
     :param Weather:
     :param response: запрос на OpenWeatherMap API
-    :return: dict_with_weather_info
+    :return: WeatherInfo
     """
     data = response.json()
 
@@ -43,7 +43,7 @@ def processing_coordinates(response: requests.Response) -> Coordinates:
     """
     Обработка данных из запроса на geocoding API
     :param response: запрос на Geocoding API
-    :return: dict_with_geocoding_info
+    :return: Coordinates
     """
     data = response.json()[0]
     lat = data['lat']
@@ -53,7 +53,7 @@ def processing_coordinates(response: requests.Response) -> Coordinates:
     return Coordinates(lat=lat, lon=lon)
 
 
-def processing_coorditanes_reverse(response: requests.Response) -> str:
+def processing_coordinates_reverse(response: requests.Response) -> str:
     """
     Обработка данных из запроса на geocoding reverse API
     :param response: запрос на Geocoding API

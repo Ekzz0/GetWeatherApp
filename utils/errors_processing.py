@@ -6,9 +6,10 @@ import requests
 def requests_errors(func: Callable) -> Callable:
     """
     Метод для отлавливания ошибок типа HTTPError, ConnectionError, Timeout, RequestException
-    :param func:
-    :return:
+    :param func: функция, имеющая запросы requests
+    :return: wrapper
     """
+
     def wrapper(*args, **kwargs) -> Callable:
         try:
             return func(*args, **kwargs)
@@ -26,15 +27,16 @@ def requests_errors(func: Callable) -> Callable:
 
     return wrapper
 
+
 def open_weather_error_processing(cod: int):
     """
     Данный метод отлавливает ошибки, которые могут возникнуть при использовании Open Weather Map API.
     :param cod: код ошибки
     """
-    if cod == HTTPStatus.BAD_REQUEST.value:  # 400
+    if cod == HTTPStatus.BAD_REQUEST:  # 400
         print("Неправильно введены координаты. Попробуйте еще раз")
         raise requests.HTTPError
-    elif cod == HTTPStatus.UNAUTHORIZED.value:  # 401
+    elif cod == HTTPStatus.UNAUTHORIZED:  # 401
         print("Возникла одна из следующих ошибок:\n"
               "- Вы не указали свой ключ API в запросе API.\n"
               "- Ваш ключ API еще не активирован.\n"
@@ -43,6 +45,3 @@ def open_weather_error_processing(cod: int):
     # elif cod == HTTPStatus.NOT_FOUND.value:  # 404
     #     print("Вы указали неправильное название города. Попробуйте еще раз.\n")
     #     raise requests.HTTPError
-
-
-

@@ -1,22 +1,20 @@
-from .open_weather_api_scripts import get_coordinates_by_city_name, get_weather_by_coordinates, get_coordinates_by_ip, \
-    get_weather_by_location
+from .open_weather_api_scripts import coordinates_by_city_name, weather_by_entered_coordinates, coordinates_by_ip, \
+    weather_by_received_coordinates
 from .json_scripts import fill_json, read_json
-from .io_scripts import get_count_from_console, print_row_from_json, clear_menu
+from .io_scripts import input_count, print_row_from_json, clear_menu
 import traceback
 import json
-from .data_structures import WeatherInfo
+from .config import PATH_HISTORY, WeatherInfo
 
 
+# Алгоритм действия 'Выбор температуры по текущему местоположению'
 def by_ip_action():
-    """
-    Алгоритм действия 'Выбор температуры по текущему местоположению'
-    """
     try:
         clear_menu()
-        Coords, Weather = get_coordinates_by_ip()
-        Weather = get_weather_by_location(Coords, Weather)
+        Coords, Weather = coordinates_by_ip()
+        Weather = weather_by_received_coordinates(Coords, Weather)
         clear_menu()
-        add_data_to_history(Weather)
+        fill_json(Weather)
         Weather.print_weather_info()
     # Учёт конкретных ошибок происходит на более низком уровне
     except Exception as e:
@@ -25,16 +23,14 @@ def by_ip_action():
         quit()
 
 
+# Алгоритм действия 'Выбор температуры по городу'
 def by_city_name_action():
-    """
-    Алгоритм действия 'Выбор температуры по городу'
-    """
     try:
         clear_menu()
-        Coords, Weather = get_coordinates_by_city_name()
-        Weather = get_weather_by_location(Coords, Weather)
+        Coords, Weather = coordinates_by_city_name()
+        Weather = weather_by_received_coordinates(Coords, Weather)
         clear_menu()
-        add_data_to_history(Weather)
+        fill_json(Weather)
         Weather.print_weather_info()
     # Учёт конкретных ошибок происходит на более низком уровне
     except Exception as e:
@@ -43,17 +39,14 @@ def by_city_name_action():
         quit()
 
 
+# Алгоритм действия 'Выбор температуры по координатам'
 def by_coords_action():
-    """
-    Алгоритм действия 'Выбор температуры по координатам'
-    """
     try:
         clear_menu()
-        Weather = get_weather_by_coordinates()
+        Weather = weather_by_entered_coordinates()
         clear_menu()
-        add_data_to_history(Weather)
+        fill_json(Weather)
         Weather.print_weather_info()
-
     # Учёт конкретных ошибок происходит на более низком уровне
     except Exception as e:
         print("Неизвестная ошибка.", type(e), e)
@@ -61,22 +54,16 @@ def by_coords_action():
         quit()
 
 
-def add_data_to_history(data: WeatherInfo):
-    fill_json(data)
-
-
-def get_data_from_history():
-    """
-    Алгоритм действия 'Посмотреть историю'
-    """
+# Алгоритм действия 'Посмотреть историю'
+def data_from_history():
     try:
-        data = read_json("history/history.json")
+        data = read_json(PATH_HISTORY)
     except json.decoder.JSONDecodeError:
         clear_menu()
         print("Файл пуст.")
     else:
         print("Количество записей в истории:", len(data))
-        count = get_count_from_console()
+        count = input_count()
         clear_menu()
         try:
             if count > len(data):
@@ -88,7 +75,6 @@ def get_data_from_history():
                     print_row_from_json(i, row)
             else:
                 clear_menu()
-                # map(print_row_from_json, data[::-1][:count])
                 for i, row in enumerate(data[::-1][:count]):
                     print_row_from_json(i, row)
         except Exception as e:
@@ -97,9 +83,7 @@ def get_data_from_history():
             print(traceback.format_exc())
 
 
+# Алгоритм действия 'Очистить историю'
 def clear_history():
-    """
-    Алгоритм действия 'Очистить историю'
-    """
-    with open("history/history.json", 'w'):
+    with open(PATH_HISTORY, 'w'):
         pass

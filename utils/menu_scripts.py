@@ -1,22 +1,22 @@
-from .actions_menu import get_options_by_action_name
+from .actions_router import get_options_by_action_name
 from .io_scripts import clear_menu
-from .constants import dict_with_action_options
+from .config import Option
 
 
-def print_options(options: dict_with_action_options):
+def loop(options: Option):
     """
-    Метод, который выводит в консоль данные возможных действий.
+    Отображение меню по указанным возможным действиям и заголовку.
     :param options: словарь с информацией о доступных в данном меню действиях.
     """
-    # Try-except использован для того, чтобы выводить в консоль только те элементы словаря options,
-    # которые имею ключ - целое число, т.к. в словаре хранятся и значения с ключами другого формата
+    while True:
+        # Вывод заголовка и пунктов меню
+        print_head_and_options(options)
 
-    for menu in options.menu_list:
-        print(f'{menu.number}: {menu.action_label}', end='')
-    print()
+        # Выбор следующего действия (меню)
+        options = select_mode(options)
 
 
-def print_head_and_options(options: dict_with_action_options):
+def print_head_and_options(options: Option):
     """
     Отображение заголовка, выполнение указанной в options функции и отображение доступных действий.
     :param options: словарь с информацией о доступных в данном меню действиях.
@@ -35,20 +35,17 @@ def print_head_and_options(options: dict_with_action_options):
     print_options(options)
 
 
-def loop(options: dict_with_action_options):
+def print_options(options: Option):
     """
-    Отображение меню по указанным возможным действиям и заголовку.
+    Метод, который выводит в консоль данные возможных действий.
     :param options: словарь с информацией о доступных в данном меню действиях.
     """
-    while True:
-        # Вывод заголовка и пунктов меню
-        print_head_and_options(options)
-
-        # Выбор следующего действия (меню)
-        options = select_mode(options)
+    for menu in options.menu_list:
+        print(f'{menu.number}: {menu.action_label}', end='')
+    print()
 
 
-def select_mode(options: dict_with_action_options) -> dict_with_action_options:
+def select_mode(options: Option) -> Option:
     """
     Выбор следующего действия.
     :param options: словарь с информацией о доступных в данном меню действиях.

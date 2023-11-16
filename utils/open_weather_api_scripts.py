@@ -1,15 +1,15 @@
-from .requests_scripts import get_location_by_ip, get_coordinates_reverse, get_coordinates, \
+from .getters import get_location_by_ip, get_coordinates_reverse, get_coordinates, \
     get_weather
 from .errors_processing import requests_errors
-from .io_scripts import get_coords_by_console, clear_menu
-from .data_structures import WeatherInfo, Coordinates
+from .io_scripts import input_coords, clear_menu
+from .config import WeatherInfo, Coordinates
 
 
 @requests_errors
-def get_coordinates_by_city_name() -> tuple[Coordinates, WeatherInfo]:
+def coordinates_by_city_name() -> tuple[Coordinates, WeatherInfo]:
     """
-    Получение report_geo по названию города (city_name)
-    :return: report_geo
+    Получение координат по названию города.
+    :return: координаты и название города в WeatherInfo
     """
     while True:
         city_name = input("Введите название города: ").strip()
@@ -25,9 +25,10 @@ def get_coordinates_by_city_name() -> tuple[Coordinates, WeatherInfo]:
             return Coords, WeatherInfo(city_name=city_name)
 
 
-def get_city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
+@requests_errors
+def city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
     """
-    Получение названия города (city_name) по координатам (lat, lon)
+    Получение названия города по координатам (lat, lon)
     :return: city_name
     """
     try:
@@ -40,22 +41,23 @@ def get_city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
         return Weather
 
 
-def get_weather_by_coordinates() -> WeatherInfo:
+@requests_errors
+def weather_by_entered_coordinates() -> WeatherInfo:
     """
-    Получение прогноза погоды (report_weather) по координатам (lat, lon)
-    :return: report_weather
+    Получение прогноза погоды по введенным координатам (lat, lon)
+    :return: прогноз погоды
     """
-    Coords = get_coords_by_console()
-    Weather = get_city_name_by_coordinates(Coords)
+    Coords = input_coords()
+    Weather = city_name_by_coordinates(Coords)
     Weather = get_weather(Coords, Weather)
 
     return Weather
 
 
 @requests_errors
-def get_weather_by_location(Coords, Weather) -> WeatherInfo:
+def weather_by_received_coordinates(Coords, Weather) -> WeatherInfo:
     """
-    Получение прогноза погоды (Weather) по report_geo
+    Получение прогноза погоды (Weather) по полученным координатам (lat, lon)
     :return: Weather
     """
     Weather = get_weather(Coords, Weather)
@@ -64,11 +66,11 @@ def get_weather_by_location(Coords, Weather) -> WeatherInfo:
 
 
 @requests_errors
-def get_coordinates_by_ip():
+def coordinates_by_ip():
     """
-    Получение report_geo по текущему местоположению
-    :return: report_geo
+    Получение координат по текущему местоположению
+    :return: координаты и Weather с названием города
     """
-    Coordinates, Weather = get_location_by_ip()
+    Coords, Weather = get_location_by_ip()
 
-    return Coordinates, Weather
+    return Coords, Weather

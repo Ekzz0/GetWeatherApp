@@ -1,5 +1,5 @@
 import json
-from .data_structures import WeatherInfo
+from .config import PATH_HISTORY, WeatherInfo
 
 
 def fill_json(data: WeatherInfo):
@@ -7,7 +7,7 @@ def fill_json(data: WeatherInfo):
     Метод для заполнения json файла по словарю с данными о погоде.
     :param data: словарь с данными о погоде
     """
-    with open("history/history.json", 'a+') as file:
+    with open(PATH_HISTORY, 'a+') as file:
         try:
             file.seek(file.truncate(file.tell() - 1))  # обрезаем хвост и переходим в конец
             file.write(',\n')  # добавим запятую
@@ -19,13 +19,13 @@ def fill_json(data: WeatherInfo):
             file.write(']')
 
 
-def read_json(filename: str) -> list[dict]:
+def read_json(path: str) -> list[dict]:
     """
     Метод для чтения json файла
-    :param filename: имя открываемого файла
-    :return: dict_with_weather_info
+    :param path: имя открываемого файла
+    :return: список со словарями, которые хранят данные о погоде. Формат словаря такой же, как и WeatherInfo
     """
-    with open(filename, "r") as file:
+    with open(path, "r") as file:
         data = json.load(file)
 
     return data

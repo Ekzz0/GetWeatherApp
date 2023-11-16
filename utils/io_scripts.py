@@ -1,20 +1,18 @@
 import os
-from .data_structures import Coordinates, WeatherInfo
+from .config import Coordinates, WeatherInfo
 from dacite import from_dict
 
 
+# Очищение консоли
 def clear_menu():
-    """
-    # Очищение консоли
-    """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def print_row_from_json(i: int, row: WeatherInfo):
+def print_row_from_json(i: int, row: dict):
     """
     Метод для вывода данных из json файла в консоль.
     :param i: номер индекса в словаре.
-    :param row: словарь с данными
+    :param row: словарь с данными из json файла
     """
     print(f"Запрос номер {i + 1}:")
     Weather = from_dict(data_class=WeatherInfo, data=row)
@@ -22,7 +20,7 @@ def print_row_from_json(i: int, row: WeatherInfo):
     print()
 
 
-def get_count_from_console() -> int:
+def input_count() -> int:
     """
     Метод для получения числа записей, которых пользователь желает просмотреть.
     :return: count число записей
@@ -40,7 +38,7 @@ def get_count_from_console() -> int:
             return count
 
 
-def get_coords_by_console() -> Coordinates:
+def input_coords() -> Coordinates:
     """
     Получение координат (lat, lon) из консоли
     :return: (lat, lon)
