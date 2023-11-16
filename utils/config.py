@@ -1,4 +1,4 @@
-from enum import StrEnum, Enum
+from enum import StrEnum
 from dataclasses import dataclass, asdict
 from typing import Optional, Callable
 

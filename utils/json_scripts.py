@@ -21,8 +21,8 @@ def fill_json(data: WeatherInfo):
 
 def read_json(path: str) -> list[dict]:
     """
-    Метод для чтения json файла
-    :param path: имя открываемого файла
+    Метод для чтения json файла.
+    :param path: путь к файлу.
     :return: список со словарями, которые хранят данные о погоде. Формат словаря такой же, как и WeatherInfo
     """
     with open(path, "r") as file:

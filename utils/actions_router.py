@@ -9,13 +9,13 @@ def get_options_by_action_name(action: Action = Action.MAIN_MENU) -> Option | No
         quit()
     elif action == Action.MAIN_MENU:
         return Option(
-            head="Определить погоду (по координатам)\n".upper(),
+            head="Определить погоду (по координатам)".upper(),
             func=None,
             menu_list=MenuLists.MAIN_MENU_OPTIONS
         )
     elif action == Action.TEMP_BY_COORDS:
         return Option(
-            head="Определить текущую погоду (по координатам):\n".upper(),
+            head="Определить текущую погоду (по координатам):".upper(),
             func=None,
             menu_list=MenuLists.TEMP_BY_COORDS_OPTIONS
         )

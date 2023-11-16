@@ -33,9 +33,7 @@ def city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
     """
     try:
         Weather = get_coordinates_reverse(Coords)
-    except IndexError:
-        return 'Город не указан'
-    except KeyError:
+    except IndexError or KeyError:
         return 'Город не указан'
     else:
         return Weather
@@ -68,7 +66,7 @@ def weather_by_received_coordinates(Coords, Weather) -> WeatherInfo:
 @requests_errors
 def coordinates_by_ip():
     """
-    Получение координат по текущему местоположению
+    Получение координат по текущему местоположению.
     :return: координаты и Weather с названием города
     """
     Coords, Weather = get_location_by_ip()
