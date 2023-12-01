@@ -1,4 +1,4 @@
-from .action_router import TaskManager
+from .task_manager import TaskManager
 from .io_scripts import clear_menu
 
 
@@ -26,9 +26,7 @@ class MenuInterface:
             print(self.options.head)
 
         # Вызов соответствующей функции
-        if self.options.func:
-            func = self.options.func
-            func(self.options.args, self.options.methods)
+        self.manager.do_tasks(self.options.args)
 
         # Вывод в консоль доступных действий
         self.print_options()

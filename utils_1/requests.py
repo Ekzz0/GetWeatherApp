@@ -5,7 +5,7 @@ from .data_processing import processing_weather, processing_coordinates, \
     processing_coordinates_reverse, processing_location_by_ip
 
 
-def get_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
+def request_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
     """
     Запрос на ipinfo для получения данных по ip адресу и его обработка
     :return: Coordinates, WeatherInfo
@@ -16,7 +16,7 @@ def get_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
     return Coords, Weather
 
 
-def get_city_name_by_coordinates(Coords) -> WeatherInfo:
+def request_city_name_by_coordinates(Coords) -> WeatherInfo:
     """
     Запрос на Geocoding reverse API и его обработка
     :param Coords: широта и долгота
@@ -28,7 +28,7 @@ def get_city_name_by_coordinates(Coords) -> WeatherInfo:
     return Weather
 
 
-def get_coordinates(city_name: str) -> Coordinates:
+def request_coordinates(city_name: str) -> Coordinates:
     """
     Запрос на Geocoding API и его обработка
     :param city_name: название города
@@ -42,7 +42,7 @@ def get_coordinates(city_name: str) -> Coordinates:
     return Coords
 
 
-def get_weather(Coords, Weather) -> WeatherInfo:
+def request_weather(Coords, Weather) -> WeatherInfo:
     """
     Запрос на OpenWeatherMap API и его обработка
     :param

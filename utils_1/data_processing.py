@@ -1,6 +1,6 @@
 import requests
 import datetime
-from .data_structures import Coordinates, WeatherInfo
+from .config import Coordinates, WeatherInfo
 
 
 def processing_date(dt: int, timedelta: int) -> str:

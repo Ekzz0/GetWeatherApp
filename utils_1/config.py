@@ -1,15 +1,13 @@
-import json
-import traceback
 from enum import StrEnum
 from dataclasses import dataclass, asdict
 from typing import Optional, Callable
-
 
 # Путь к истории запросов
 PATH_HISTORY = "history/history.json"
 
 # Константы для подключения к API
 API_KEY = 'd0b91a8a366a27778b9e5c42c592baae'
+
 
 # Класс для хранения URL адресов
 class URLs(StrEnum):
@@ -76,9 +74,7 @@ class MenuLists:
 class Option:
     menu_list: list[Menu]
     head: str = ''
-    func: Optional[Callable] = None
     args: list = None
-    methods: object = None
 
 
 # Класс данных, имеющие метод dict. От него наследуются другие классы данных, хранящие информацию из api
@@ -87,7 +83,6 @@ class MyDataClass:
     # Метод, который возвращает словарь, соответствующий данному дата-классу
     def dict(self):
         return {k: str(v) for k, v in asdict(self).items()}
-
 
 
 # Полученная информация о погоде
@@ -116,3 +111,46 @@ class Coordinates(MyDataClass):
     lat: float = None
     lon: float = None
 
+
+class TaskName(StrEnum):
+    END = 'Конец'
+    GET_WEATHER = 'Получить погоду'
+    CITY_BY_COORDS = 'Название города по координатам'
+    COORDS_BY_IP = 'Координаты по ip'
+    COORDS_BY_CITY = 'Координаты по городу'
+    VIEW_HISTORY = 'Посмотреть историю'
+    CLEAR_HISTORY = 'Очистить историю'
+    PASS = 'Ничего не делать'
+
+
+@dataclass
+class Task:
+    func_name: TaskName
+
+
+@dataclass
+class TaskList:
+    WEATER_BY_COORDS_TASKS = [
+        Task(func_name=TaskName.CITY_BY_COORDS),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    WEATER_BY_IP = [
+        Task(func_name=TaskName.COORDS_BY_IP),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    WEATER_BY_CITY_NAME = [
+        Task(func_name=TaskName.COORDS_BY_CITY),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    CLEAR_HISTORY = [
+        Task(func_name=TaskName.CLEAR_HISTORY)
+    ]
+    VIEW_HISTORY = [
+        Task(func_name=TaskName.VIEW_HISTORY)
+    ]
+    PASS = [
+        Task(func_name=TaskName.PASS)
+    ]

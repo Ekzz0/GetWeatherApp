@@ -1,7 +1,7 @@
 
 
-from .getters import get_location_by_ip, get_city_name_by_coordinates, get_coordinates, \
-    get_weather
+from .getters import request_location_by_ip, request_city_name_by_coordinates, request_coordinates, \
+    request_weather
 from .errors_processing import requests_errors
 from .io_scripts import input_coords, clear_menu
 from .config import WeatherInfo, Coordinates
@@ -18,7 +18,7 @@ def coordinates_by_city_name() -> tuple[Coordinates, WeatherInfo]:
         city_name = input("Введите название города: ").strip()
         try:
             # Получение координат
-            Coords = get_coordinates(city_name)
+            Coords = request_coordinates(city_name)
             clear_menu()
         except IndexError:
             # Обработка ошибки, связанной с неверно введенным названием
@@ -35,7 +35,7 @@ def city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
     :return: city_name
     """
     try:
-        Weather = get_city_name_by_coordinates(Coords)
+        Weather = request_city_name_by_coordinates(Coords)
     except IndexError or KeyError:
         return 'Город не указан'
     else:
@@ -50,7 +50,7 @@ def weather_by_entered_coordinates() -> WeatherInfo:
     """
     Coords = input_coords()
     Weather = city_name_by_coordinates(Coords)
-    Weather = get_weather(Coords, Weather)
+    Weather = request_weather(Coords, Weather)
 
     return Weather
 
@@ -61,7 +61,7 @@ def weather_by_received_coordinates(Coords, Weather) -> WeatherInfo:
     Получение прогноза погоды (Weather) по полученным координатам (lat, lon)
     :return: Weather
     """
-    Weather = get_weather(Coords, Weather)
+    Weather = request_weather(Coords, Weather)
 
     return Weather
 
@@ -72,6 +72,6 @@ def coordinates_by_ip():
     Получение координат по текущему местоположению.
     :return: координаты и Weather с названием города
     """
-    Coords, Weather = get_location_by_ip()
+    Coords, Weather = request_location_by_ip()
 
     return Coords, Weather
