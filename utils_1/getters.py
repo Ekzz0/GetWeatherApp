@@ -1,5 +1,5 @@
 import requests
-from .config import URLs, API_KEY, WeatherInfo, Coordinates
+from .config import URLs, WeatherInfo, Coordinates, API_KEY
 from .errors_processing import open_weather_error_processing
 from .data_processing import processing_weather, processing_coordinates, \
     processing_coordinates_reverse, processing_location_by_ip
@@ -16,7 +16,7 @@ def get_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
     return Coords, Weather
 
 
-def get_coordinates_reverse(Coords) -> WeatherInfo:
+def get_city_name_by_coordinates(Coords) -> WeatherInfo:
     """
     Запрос на Geocoding reverse API и его обработка
     :param Coords: широта и долгота

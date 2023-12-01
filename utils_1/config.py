@@ -1,13 +1,15 @@
+import json
+import traceback
 from enum import StrEnum
 from dataclasses import dataclass, asdict
 from typing import Optional, Callable
+
 
 # Путь к истории запросов
 PATH_HISTORY = "history/history.json"
 
 # Константы для подключения к API
 API_KEY = 'd0b91a8a366a27778b9e5c42c592baae'
-
 
 # Класс для хранения URL адресов
 class URLs(StrEnum):
@@ -75,6 +77,8 @@ class Option:
     menu_list: list[Menu]
     head: str = ''
     func: Optional[Callable] = None
+    args: list = None
+    methods: object = None
 
 
 # Класс данных, имеющие метод dict. От него наследуются другие классы данных, хранящие информацию из api
@@ -83,6 +87,7 @@ class MyDataClass:
     # Метод, который возвращает словарь, соответствующий данному дата-классу
     def dict(self):
         return {k: str(v) for k, v in asdict(self).items()}
+
 
 
 # Полученная информация о погоде
@@ -110,3 +115,4 @@ class WeatherInfo(MyDataClass):
 class Coordinates(MyDataClass):
     lat: float = None
     lon: float = None
+

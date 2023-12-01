@@ -23,8 +23,6 @@ class Action(StrEnum):
     MAIN_MENU = 'Главное меню'
     TEMP_BY_COORDS = 'Выбор температуры по координатам'
     TEMP_BY_CITY_NAME = 'Выбор температуры по городу'
-    INPUT_COORDS = 'Ввести координаты'
-    INPUT_CITY_NAME = 'Ввести название города'
     TEMP_BY_IP = 'Выбор температуры по текущему местоположению'
     VIEW_HISTORY = 'Посмотреть историю'
     CLEAR_HISTORY = 'Очистить историю'
@@ -61,31 +59,6 @@ class MenuLists:
              action_label="Завершить работу приложения\n",
              action=Action.END_APP)
     ]
-
-    TEMP_BY_COORDS_OPTIONS = [
-        Menu(number=1,
-             action_label="Ввести координаты\n",
-             action=Action.INPUT_COORDS),
-        Menu(number=2,
-             action_label="Назад\n",
-             action=Action.MAIN_MENU),
-        Menu(number=3,
-             action_label="Завершить работу приложения\n",
-             action=Action.END_APP)
-    ]
-
-    TEMP_BY_CITY_NAME_OPTIONS = [
-        Menu(number=1,
-             action_label="Ввести название города\n",
-             action=Action.INPUT_CITY_NAME),
-        Menu(number=2,
-             action_label="Назад\n",
-             action=Action.MAIN_MENU),
-        Menu(number=3,
-             action_label="Завершить работу приложения\n",
-             action=Action.END_APP)
-    ]
-
     BACK_AND_END_OPTIONS = [
         Menu(number=1,
              action_label="Назад\n",
@@ -135,5 +108,5 @@ class WeatherInfo(MyDataClass):
 # Полученная информация по координатам
 @dataclass
 class Coordinates(MyDataClass):
-    lat: float
-    lon: float
+    lat: float = None
+    lon: float = None

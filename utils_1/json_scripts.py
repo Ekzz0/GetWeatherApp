@@ -2,6 +2,7 @@ import json
 from .config import PATH_HISTORY, WeatherInfo
 
 
+
 def fill_json(data: WeatherInfo):
     """
     Метод для заполнения json файла по словарю с данными о погоде.

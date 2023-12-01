@@ -46,7 +46,7 @@ class MenuInterface:
             mode = int(input("Выберите действие (введите цифру): ").strip())
             action = self.options.menu_list[mode - 1].action
         # Обработка ошибки, связанной с неверно выбранным меню
-        except ValueError or KeyError:
+        except (IndexError, ValueError, KeyError):
             clear_menu()
             self.options.func = None
         else:

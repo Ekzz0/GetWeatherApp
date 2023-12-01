@@ -9,28 +9,15 @@ def get_options_by_action_name(action: Action = Action.MAIN_MENU) -> Option | No
         quit()
     elif action == Action.MAIN_MENU:
         return Option(
-            head="Определить погоду (по координатам)".upper(),
             func=None,
             menu_list=MenuLists.MAIN_MENU_OPTIONS
         )
     elif action == Action.TEMP_BY_COORDS:
         return Option(
-            head="Определить текущую погоду (по координатам):".upper(),
-            func=None,
-            menu_list=MenuLists.TEMP_BY_COORDS_OPTIONS
-        )
-    elif action == Action.TEMP_BY_CITY_NAME:
-        return Option(
-            head="Определить текущую погоду (по городу):".upper(),
-            func=None,
-            menu_list=MenuLists.TEMP_BY_CITY_NAME_OPTIONS
-        )
-    elif action == Action.INPUT_COORDS:
-        return Option(
             func=by_coords_action,
             menu_list=MenuLists.BACK_AND_END_OPTIONS
         )
-    elif action == Action.INPUT_CITY_NAME:
+    elif action == Action.TEMP_BY_CITY_NAME:
         return Option(
             func=by_city_name_action,
             menu_list=MenuLists.BACK_AND_END_OPTIONS

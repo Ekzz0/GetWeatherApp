@@ -1,10 +1,11 @@
-from .actions_router import get_options_by_action_name
+from .action_router import TaskManager
 from .io_scripts import clear_menu
 
 
 class MenuInterface:
     def __init__(self):
-        self.options = get_options_by_action_name()
+        self.manager = TaskManager()
+        self.options = self.manager.get_options()
 
     # Цикл с отображением меню по указанными возможными действиям и заголовку.
     def loop(self):
@@ -27,7 +28,7 @@ class MenuInterface:
         # Вызов соответствующей функции
         if self.options.func:
             func = self.options.func
-            func()
+            func(self.options.args, self.options.methods)
 
         # Вывод в консоль доступных действий
         self.print_options()
@@ -46,10 +47,10 @@ class MenuInterface:
             mode = int(input("Выберите действие (введите цифру): ").strip())
             action = self.options.menu_list[mode - 1].action
         # Обработка ошибки, связанной с неверно выбранным меню
-        except ValueError or KeyError:
+        except (IndexError, ValueError, KeyError):
             clear_menu()
             self.options.func = None
         else:
             clear_menu()
             # Получение параметров выбранного меню
-            self.options = get_options_by_action_name(action=action)
+            self.options = self.manager.get_options(action=action)

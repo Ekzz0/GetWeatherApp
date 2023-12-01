@@ -16,7 +16,7 @@ def get_location_by_ip() -> tuple[Coordinates, WeatherInfo]:
     return Coords, Weather
 
 
-def get_coordinates_reverse(Coords) -> WeatherInfo:
+def get_city_name_by_coordinates(Coords) -> WeatherInfo:
     """
     Запрос на Geocoding reverse API и его обработка
     :param Coords: широта и долгота

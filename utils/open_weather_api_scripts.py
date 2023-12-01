@@ -1,8 +1,11 @@
-from .getters import get_location_by_ip, get_coordinates_reverse, get_coordinates, \
+
+
+from .getters import get_location_by_ip, get_city_name_by_coordinates, get_coordinates, \
     get_weather
 from .errors_processing import requests_errors
 from .io_scripts import input_coords, clear_menu
 from .config import WeatherInfo, Coordinates
+
 
 
 @requests_errors
@@ -32,7 +35,7 @@ def city_name_by_coordinates(Coords: Coordinates) -> WeatherInfo | str:
     :return: city_name
     """
     try:
-        Weather = get_coordinates_reverse(Coords)
+        Weather = get_city_name_by_coordinates(Coords)
     except IndexError or KeyError:
         return 'Город не указан'
     else:
