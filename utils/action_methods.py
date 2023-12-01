@@ -70,3 +70,6 @@ def end(self):
 
 def void(*args, **kwargs):
     pass
+
+def close(*args, **kwargs):
+    quit()

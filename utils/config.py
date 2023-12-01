@@ -74,7 +74,7 @@ class MenuLists:
 class Option:
     menu_list: list[Menu]
     head: str = ''
-    func: Optional[Callable] = None
+    args: list = None
 
 
 # Класс данных, имеющие метод dict. От него наследуются другие классы данных, хранящие информацию из api
@@ -110,3 +110,51 @@ class WeatherInfo(MyDataClass):
 class Coordinates(MyDataClass):
     lat: float = None
     lon: float = None
+
+
+class TaskName(StrEnum):
+    END = 'Конец'
+    GET_WEATHER = 'Получить погоду'
+    CITY_BY_COORDS = 'Название города по координатам'
+    COORDS_BY_IP = 'Координаты по ip'
+    COORDS_BY_CITY = 'Координаты по городу'
+    VIEW_HISTORY = 'Посмотреть историю'
+    CLEAR_HISTORY = 'Очистить историю'
+    PASS = 'Ничего не делать'
+    CLOSE_APP = 'Закрыть приложение'
+
+
+@dataclass
+class Task:
+    func_name: TaskName
+
+
+@dataclass
+class TaskList:
+    WEATER_BY_COORDS_TASKS = [
+        Task(func_name=TaskName.CITY_BY_COORDS),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    WEATER_BY_IP = [
+        Task(func_name=TaskName.COORDS_BY_IP),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    WEATER_BY_CITY_NAME = [
+        Task(func_name=TaskName.COORDS_BY_CITY),
+        Task(func_name=TaskName.GET_WEATHER),
+        Task(func_name=TaskName.END)
+    ]
+    CLEAR_HISTORY = [
+        Task(func_name=TaskName.CLEAR_HISTORY)
+    ]
+    VIEW_HISTORY = [
+        Task(func_name=TaskName.VIEW_HISTORY)
+    ]
+    PASS = [
+        Task(func_name=TaskName.PASS)
+    ]
+    CLOSE_APP = [
+        Task(func_name=TaskName.CLOSE_APP)
+    ]
